@@ -1,0 +1,45 @@
+-- Find the item that has the minimum weight.
+
+
+SELECT *
+FROM ITEMS
+WHERE WEIGHT = (SELECT MIN(WEIGHT) FROM ITEMS);
+
+-- Find the different warehouses in "Pune".
+
+SELECT *
+FROM WAREHOUSES w 
+WHERE LOCATION = 'Pune';
+
+-- Find the details of items ordered by a customer named "Mr. Patil".
+
+SELECT ITEMS.*
+FROM ITEMS
+JOIN ORDER_ITEMS ON ITEMS.ITEMNO = ORDER_ITEMS.ITEMNO
+JOIN ORDERS ON ORDER_ITEMS.ONO = ORDERS.ONO
+JOIN CUSTOMER ON ORDERS.CNO = CUSTOMER.CNO
+WHERE CUSTOMER.CNAME = 'Mr. Patil';
+
+-- Find a Warehouse that has the maximum number of stores.
+
+SELECT WID, COUNT(*) AS StoreCount
+FROM STORES
+GROUP BY WID
+ORDER BY StoreCount DESC
+LIMIT 1;
+
+-- Find an item that is ordered for a minimum number of times.
+
+SELECT ITEMNO, COUNT(*) AS TimesOrdered
+FROM ORDER_ITEMS
+GROUP BY ITEMNO
+ORDER BY TimesOrdered DESC;
+
+-- Find the detailed orders given by each customer.
+
+SELECT CUSTOMER.CNAME, ORDERS.ONO, ORDERS.ODATE, ITEMS.DESCRIPTION
+FROM CUSTOMER
+JOIN ORDERS ON CUSTOMER.CNO = ORDERS.CNO
+JOIN ORDER_ITEMS ON ORDERS.ONO = ORDER_ITEMS.ONO
+JOIN ITEMS ON ORDER_ITEMS.ITEMNO = ITEMS.ITEMNO
+ORDER BY CUSTOMER.CNAME, ORDERS.ONO;
